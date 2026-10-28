@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Ôn Tập & Thi Thử Giữa Kì I - Lớp 9</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-radio:checked + label {
+            background-color: #eff6ff;
+            border-color: #2563eb;
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen pb-12">
+    <!-- Header -->
+    <header class="bg-indigo-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="goHome()">
+                <div class="bg-white text-indigo-700 font-black px-3 py-1 rounded-lg text-xl shadow">9</div>
+                <div>
+                    <h1 class="text-lg font-bold leading-tight uppercase">Hệ Thống Thi Thử Ôn Tập Giữa Kì I</h1>
+                    <p class="text-xs text-indigo-200" id="current-subject-label">Lựa chọn môn học để bắt đầu làm bài</p>
+                </div>
+            </div>
+            <div id="timer-box" class="bg-indigo-800 border border-indigo-500/30 px-4 py-1.5 rounded-xl text-right hidden">
+                <span class="text-[10px] text-indigo-200 block uppercase">Thời gian còn lại</span>
+                <span id="timer" class="font-mono text-xl font-bold text-amber-300">45:00</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 mt-8">
+        <!-- Dashboard / Main Menu Screen -->
+        <div id="menu-screen" class="bg-white rounded-2xl shadow-sm p-6 border border-slate-200">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <h2 class="text-2xl font-black text-slate-800 uppercase">DANH SÁCH MÔN THI THỬ THANG ĐIỂM 10</h2>
+                <p class="text-sm text-slate-500 mt-2">Nội dung câu hỏi được giữ nguyên chuẩn 100% theo đề cương ôn tập. Hệ thống sẽ tự động tính giờ 45 phút và chấm điểm trắc nghiệm trực tiếp sau khi nộp bài.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <!-- Card Lịch Sử -->
+                <div class="border-2 border-slate-100 hover:border-red-500 rounded-2xl p-5 transition bg-gradient-to-br from-white to-red-50/20 flex flex-col justify-between shadow-sm hover:shadow-md">
+                    <div>
+                        <span class="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full">Lịch Sử 9</span>
+                        <h3 class="text-lg font-bold text-slate-800 mt-3 mb-1">Đề cương Lịch Sử GKI</h3>
+                        <p class="text-xs text-slate-500 mb-4">12 Trắc nghiệm • 4 Đúng/Sai • 4 Tự luận</p>
+                    </div>
+                    <button onclick="selectSubject('su')" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl shadow transition">BẮT ĐẦU THI SỬ</button>
+                </div>
+
+                <!-- Card Địa Lý -->
+                <div class="border-2 border-slate-100 hover:border-emerald-500 rounded-2xl p-5 transition bg-gradient-to-br from-white to-emerald-50/20 flex flex-col justify-between shadow-sm hover:shadow-md">
+                    <div>
+                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">Địa Lý 9</span>
+                        <h3 class="text-lg font-bold text-slate-800 mt-3 mb-1">Đề cương Địa Lý GKI</h3>
+                        <p class="text-xs text-slate-500 mb-4">12 Trắc nghiệm • 2 Đúng/Sai • Tính toán & TL</p>
+                    </div>
+                    <button onclick="selectSubject('dia')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow transition">BẮT ĐẦU THI ĐỊA</button>
+                </div>
+
+                <!-- Card Tin Học -->
+                <div class="border-2 border-slate-100 hover:border-blue-500 rounded-2xl p-5 transition bg-gradient-to-br from-white to-blue-50/20 flex flex-col justify-between shadow-sm hover:shadow-md">
+                    <div>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">Tin Học 9</span>
+                        <h3 class="text-lg font-bold text-slate-800 mt-3 mb-1">Đề cương Tin Học GKI</h3>
+                        <p class="text-xs text-slate-500 mb-4">24 Trắc nghiệm • 8 Đúng/Sai • 4 Tự luận</p>
+                    </div>
+                    <button onclick="selectSubject('tin')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl shadow transition">BẮT ĐẦU THI TIN HỌC</button>
+                </div>
+
+                <!-- Card Toán -->
+                <div class="border-2 border-slate-100 hover:border-purple-500 rounded-2xl p-5 transition bg-gradient-to-br from-white to-purple-50/20 flex flex-col justify-between shadow-sm hover:shadow-md">
+                    <div>
+                        <span class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full">Toán Học 9</span>
+                        <h3 class="text-lg font-bold text-slate-800 mt-3 mb-1">Đề cương Toán GKI</h3>
+                        <p class="text-xs text-slate-500 mb-4">24 Trắc nghiệm • 16 Bài tập Tự luận</p>
+                    </div>
+                    <button onclick="selectSubject('toan')" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-xl shadow transition">BẮT ĐẦU THI TOÁN</button>
+                </div>
+
+                <!-- Card Công Nghệ -->
+                <div class="border-2 border-slate-100 hover:border-amber-500 rounded-2xl p-5 transition bg-gradient-to-br from-white to-amber-50/20 flex flex-col justify-between shadow-sm hover:shadow-md">
+                    <div>
+                        <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">Công Nghệ 9</span>
+                        <h3 class="text-lg font-bold text-slate-800 mt-3 mb-1">Đề cương Công Nghệ GKI</h3>
+                        <p class="text-xs text-slate-500 mb-4">17 Trắc nghiệm • 4 Đúng/Sai • 3 Tự luận</p>
+                    </div>
+                    <button onclick="selectSubject('cn')" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 rounded-xl shadow transition">BẮT ĐẦU THI CÔNG NGHỆ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Screen -->
+        <form id="exam-form" class="hidden">
+            <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                <button type="button" onclick="goHome()" class="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1">
+                    ← Đổi môn thi khác
+                </button>
+                <span id="exam-title-badge" class="font-bold text-sm text-indigo-700 uppercase"></span>
+            </div>
+
+            <!-- PART I -->
+            <section class="mb-8" id="part1-section">
+                <div class="bg-indigo-600 text-white p-4 rounded-t-xl font-bold text-lg">PHẦN I. TRẮC NGHIỆM NHIỀU LỰA CHỌN</div>
+                <div id="part1-container" class="bg-white border-x border-b border-slate-200 rounded-b-xl p-6 space-y-6"></div>
+            </section>
+
+            <!-- PART II -->
+            <section class="mb-8" id="part2-section">
+                <div class="bg-emerald-600 text-white p-4 rounded-t-xl font-bold text-lg">PHẦN II. TRẮC NGHIỆM ĐÚNG / SAI</div>
+                <div id="part2-container" class="bg-white border-x border-b border-slate-200 rounded-b-xl p-6 space-y-8"></div>
+            </section>
+
+            <!-- PART III -->
+            <section class="mb-8" id="part3-section">
+                <div class="bg-amber-600 text-white p-4 rounded-t-xl font-bold text-lg">PHẦN III. TỰ LUẬN & BÀI TẬP BỔ SUNG</div>
+                <div id="part3-container" class="bg-white border-x border-b border-slate-200 rounded-b-xl p-6 space-y-8"></div>
+            </section>
+
+            <!-- Submit Button -->
+            <div class="text-center py-6">
+                <button type="button" onclick="submitExam()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-lg px-12 py-4 rounded-xl shadow-xl transition">
+                    NỘP BÀI VÀ CHẤM ĐIỂM TRẮC NGHIỆM
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="hidden bg-white rounded-2xl shadow-xl p-8 border border-slate-200 mb-12">
+            <h2 class="text-3xl font-black text-center text-slate-800 mb-2">KẾT QUẢ THI THỬ</h2>
+            <p id="result-subject-name" class="text-center text-slate-500 font-semibold mb-8"></p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-8">
+                <div class="text-center bg-indigo-50 border border-indigo-200 p-6 rounded-2xl">
+                    <span class="text-xs text-indigo-700 font-bold block uppercase tracking-wider">ĐIỂM CHẤM TRẮC NGHIỆM</span>
+                    <span id="final-score" class="text-4xl font-extrabold text-indigo-600 mt-2 block">0.0 / 10.0</span>
+                </div>
+                <div class="text-center bg-slate-50 border border-slate-200 p-6 rounded-2xl">
+                    <span class="text-xs text-slate-500 font-bold block uppercase tracking-wider">ĐÚNG PHẦN I</span>
+                    <span id="p1-correct" class="text-3xl font-bold text-slate-700 mt-2 block">0</span>
+                </div>
+                <div class="text-center bg-slate-50 border border-slate-200 p-6 rounded-2xl">
+                    <span class="text-xs text-slate-500 font-bold block uppercase tracking-wider">ĐÚNG PHẦN II</span>
+                    <span id="p2-correct" class="text-3xl font-bold text-slate-700 mt-2 block">0</span>
+                </div>
+            </div>
+            
+            <p class="text-center text-xs text-slate-500 mb-8 max-w-xl mx-auto leading-relaxed">
+                * Điểm số được hệ thống tự động quy đổi chuẩn trên thang điểm 10.0 dựa trên các câu trắc nghiệm. Các câu tự luận và lời giải chi tiết đã được mở khóa ở phía dưới để bạn tự đối chiếu.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <button onclick="retryExam()" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold px-8 py-3 rounded-xl shadow transition">
+                    🔄 THI LẠI ĐỂ GỠ ĐIỂM
+                </button>
+                <button onclick="goHome()" class="w-full sm:w-auto bg-slate-700 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl shadow transition">
+                    🏠 CHỌN MÔN THI KHÁC
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // DATA LỊCH SỬ 9
+        const suData = {
+            title: "Môn Lịch Sử 9 - Giữa Kì 1",
+            p1: [
+                { q: "Câu 1: Từ năm 1920, phong trào bãi công của công nhân Pháp đặt dưới sự lãnh đạo trực tiếp của:", options: ["Đảng Xã hội Pháp.", "Quốc tế Cộng sản.", "Mặt trận Nhân dân Pháp.", "Đảng Cộng sản Pháp."], ans: 3 },
+                { q: "Câu 2: Cuộc khủng hoảng kinh tế thế giới 1929 - 1933 diễn ra đầu tiên ở quốc gia nào sau đây?", options: ["Anh.", "Pháp.", "Đức.", "Mỹ."], ans: 3 },
+                { q: "Câu 3: Từ năm 1922, lãnh đạo phong trào đấu tranh của giai cấp công nhân Nhật Bản là:", options: ["Đảng Dân chủ.", "Đảng Quốc đại.", "Quốc dân Đảng.", "Đảng Cộng sản."], ans: 3 },
+                { q: "Câu 4: Năm 1945, các quốc gia Đông Nam Á nào giành được độc lập?", options: ["Việt Nam, Lào, Campuchia.", "Thái Lan, Lào, Brunây.", "Việt Nam, Inđônêxia, Lào.", "Inđônêxia, Mã Lai, Philippin."], ans: 2 },
+                { q: "Câu 5: Sự kiện nào sau đây đánh dấu bước ngoặt của cuộc Chiến tranh thế giới thứ hai khi quân Đồng minh chuyển sang phản công?", options: ["Trận Béc-lin (5-1945).", "Trận Xta-lin-grát (2-1943).", "Trận Trân Châu Cảng (12-1941).", "Trận Noóc-măng-đi (6-1944)."], ans: 1 },
+                { q: "Câu 6: Tổ chức nào sau đây được coi là tiền thân của Đảng Cộng sản Việt Nam?", options: ["Hội Việt Nam Cách mạng Thanh niên.", "Đông Dương Cộng sản đảng.", "An Nam Cộng sản đảng.", "Việt Nam Quốc dân đảng."], ans: 0 },
+                { q: "Câu 7: Đại hội lần thứ VII năm 1935 của Quốc tế Cộng sản xác định kẻ thù nguy hiểm trực tiếp trước mắt của cách mạng thế giới là:", options: ["chủ nghĩa phát xít.", "chủ nghĩa thực dân.", "chủ nghĩa đế quốc.", "chủ nghĩa tư bản."], ans: 0 },
+                { q: "Câu 8: Trong những năm 20 của thế kỉ XX, chính đảng nào nắm quyền ở Mỹ?", options: ["Đảng Tự do.", "Đảng Dân chủ.", "Đảng Bảo thủ.", "Đảng Cộng hòa."], ans: 3 },
+                { q: "Câu 9: Trong Chiến tranh thế giới thứ hai, các nước Đông Nam Á trở thành thuộc địa của:", options: ["phát xít Đức.", "phát xít Nhật.", "đế quốc Mỹ.", "phát xít Italia."], ans: 1 },
+                { q: "Câu 10: Công cuộc xây dựng và bảo vệ đất nước của Mông Cổ từ năm 1924 đến năm 1939 có sự giúp đỡ chủ yếu của quốc gia nào?", options: ["Triều Tiên.", "Trung Quốc.", "Việt Nam.", "Liên Xô."], ans: 3 },
+                { q: "Câu 11: Quốc gia nào sau đây là một trong những trụ cột của Mặt trận Đồng minh chống phát xít thành lập năm 1942?", options: ["Đức.", "Tây Ban Nha.", "Nhật Bản.", "Anh."], ans: 3 },
+                { q: "Câu 12: Trong quá trình đấu tranh (1919-1925), giai cấp tư sản Việt Nam KHÔNG lập tờ báo nào sau đây?", options: ["Thực nghiệp dân báo.", "An Nam trẻ.", "Tiếng vang An Nam.", "Diễn đàn bản xứ."], ans: 1 }
+            ],
+            p2: [
+                {
+                    title: "Câu 1: Cho đoạn tư liệu về khủng hoảng kinh tế thế giới 1929 - 1933:",
+                    items: [
+                        { text: "a) Cuộc khủng hoảng khiến hàng chục triệu công nhân thất nghiệp, hàng triệu nông dân mất ruộng đất.", ans: true },
+                        { text: "b) Cuộc khủng hoảng kinh tế thế giới 1929–1933 chỉ ảnh hưởng đến các nước tư bản châu Âu, không lan sang Mỹ.", ans: false },
+                        { text: "c) Trong bối cảnh khủng hoảng kinh tế, phong trào cách mạng thế giới có bước chuyển từ thoái trào sang cao trào.", ans: true },
+                        { text: "d) Trong những năm 1928–1933, hàng chục triệu công nhân ở các nước tư bản tham gia bãi công.", ans: true }
+                    ]
+                },
+                {
+                    title: "Câu 2: Cho đoạn tư liệu về sự thành lập Đảng Cộng sản Việt Nam:",
+                    items: [
+                        { text: "a) Đảng Cộng sản Việt Nam được thành lập đầu năm 1930.", ans: true },
+                        { text: "b) Sự ra đời của Đảng là kết quả của sự kết hợp giữa chủ nghĩa Mác - Lê-nin với phong trào công nhân và phong trào yêu nước.", ans: true },
+                        { text: "c) Sự thành lập Đảng Cộng sản Việt Nam đã chấm dứt hoàn toàn ách thống trị của thực dân Pháp ở Việt Nam.", ans: false },
+                        { text: "d) Việc Đảng ra đời đã chấm dứt thời kỳ khủng hoảng về đường lối và giai cấp lãnh đạo cách mạng Việt Nam.", ans: true }
+                    ]
+                },
+                {
+                    title: "Câu 3: Cho đoạn tư liệu về Chính sách cộng sản thời chiến ở Nga Xô viết:",
+                    items: [
+                        { text: "a) Đoạn tư liệu phản ánh nội dung của Chính sách cộng sản thời chiến trên lĩnh vực kinh tế nông nghiệp.", ans: true },
+                        { text: "b) Chính quyền Xô viết thực hiện chính sách trưng thu lương thực thừa một cách linh hoạt, phù hợp.", ans: true },
+                        { text: "c) Theo chính sách Cộng sản thời chiến, nông dân được tự do sử dụng lương thực sau khi đã đóng thuế.", ans: false },
+                        { text: "d) Khi thực hiện chính sách cộng sản thời chiến và chính sách kinh tế mới, nhà nước Nga Xô viết đều tiến hành trưng thu lương thực thừa.", ans: false }
+                    ]
+                },
+                {
+                    title: "Câu 4: Cho đoạn tư liệu về cuộc bãi công Ba Son (1925):",
+                    items: [
+                        { text: "a) Năm 1925, cuộc bãi công của công nhân Ba Son dưới sự lãnh đạo của Tôn Đức Thắng và Công hội đã giành thắng lợi.", ans: true },
+                        { text: "b) Cuộc bãi công Ba Son mở đầu cho giai đoạn đấu tranh có tổ chức của phong trào công nhân Việt Nam.", ans: true },
+                        { text: "c) Cuộc bãi công Ba Son đánh dấu bước chuyển của phong trào công nhân Việt Nam từ 'tự phát' sang 'tự giác'.", ans: true },
+                        { text: "d) Lần đầu tiên trong lịch sử Việt Nam, hình thức đấu tranh bãi công đã được công nhân xưởng Ba Son sử dụng.", ans: false }
+                    ]
+                }
+            ],
+            p3: [
+                { q: "Câu 1: Ý nghĩa lịch sử của phong trào yêu nước theo khuynh hướng dân chủ tư sản?", hint: "Gợi ý: Cổ vũ tinh thần yêu nước; Đào tạo đội ngũ nhà yêu nước mới; Khảo nghiệm con đường cứu nước; Giúp hướng tới con đường giải phóng dân tộc theo khuynh hướng vô sản." },
+                { q: "Câu 2: Từ cuộc Chiến tranh thế giới thứ hai 1939-1945, em hãy rút ra một số bài học cho việc bảo vệ hòa bình thế giới hiện nay?", hint: "Gợi ý: Giải quyết mâu thuẫn bằng thương lượng hòa bình; Cần tổ chức quốc tế duy trì an ninh; Đoàn kết phản đối vũ lực; Dung hòa lợi ích các quốc gia." },
+                { q: "Câu 3: Phân tích tình hình phát triển kinh tế của nước Mỹ giữa hai cuộc chiến tranh thế giới?", hint: "Gợi ý: Những năm 20 phát triển 'hoàng kim'; Tháng 10/1929 bùng nổ đại suy thoái; Tổng thống Ph. Ru-dơ-ven thực hiện Chính sách mới cứu nguy cho CNTB Mỹ." },
+                { q: "Câu 4: Liên Xô và các nước đồng minh có vai trò như thế nào trong việc tiêu diệt chủ nghĩa phát xít?", hint: "Gợi ý: Liên Xô, Mỹ, Anh giữ vai trò trụ cột quyết định thắng lợi, trong đó Liên Xô giữ vai trò quyết định nhất." }
+            ]
+        };
+
+        // DATA ĐỊA LÝ 9
+        const diaData = {
+            title: "Môn Địa Lý 9 - Giữa Kì 1",
+            p1: [
+                { q: "Câu 1: Tính đến năm 2024, số dân nước ta là bao nhiêu người?", options: ["101,1 triệu người.", "101,2 triệu người.", "101,3 triệu người.", "101,4 triệu người."], ans: 3 },
+                { q: "Câu 2: Vùng nào sau đây có tỉ lệ lao động đã qua đào tạo lớn nhất trên cả nước?", options: ["Vùng kinh tế trọng điểm khu vực Đông Nam Bộ.", "Vùng kinh tế khu vực Duyên hải Nam Trung Bộ.", "Vùng kinh tế trọng điểm khu vực Đồng bằng sông Hồng.", "Vùng kinh tế chuyên canh lúa Đồng bằng sông Cửu Long."], ans: 2 },
+                { q: "Câu 3: Cơ cấu dân số theo nhóm tuổi ở nước ta năm 2024 có đặc điểm nào sau đây?", options: ["Tỉ lệ dân số dưới 15 tuổi giảm, tỉ lệ dân số từ 65 tuổi trở lên tăng.", "Tỉ lệ dân số dưới 15 tuổi tăng, tỉ lệ dân số từ 65 tuổi trở lên giảm.", "Tỉ lệ dân số dưới 15 tuổi tăng, tỉ lệ dân số từ 65 tuổi trở lên tăng.", "Tỉ lệ dân số dưới 15 tuổi và từ 65 tuổi trở lên giảm."], ans: 0 },
+                { q: "Câu 4: Hiện nay, hai vùng sản xuất lúa trọng điểm đóng vai trò quan trọng nhất của nước ta là:", options: ["Đồng bằng sông Cửu Long và Duyên hải Nam Trung Bộ.", "Đồng bằng sông Hồng và Trung du miền núi phía Bắc.", "Đồng bằng sông Hồng và Đồng bằng sông Cửu Long.", "Đồng bằng sông Cửu Long và Đông Nam Bộ."], ans: 2 },
+                { q: "Câu 5: Ngành chăn nuôi lợn ở nước ta đang có sự chuyển dịch phát triển theo hình thức nào?", options: ["Chuyển từ quy mô trang trại sang chăn nuôi hộ gia đình.", "Chuyển sang chăn thả rông tự nhiên.", "Chỉ tập trung chăn nuôi quy mô lớn tại ĐBSH.", "Chuyển từ quy mô nhỏ sang các mô hình trang trại tập trung."], ans: 3 },
+                { q: "Câu 6: Tính đến năm 2024, ngành trồng trọt chiếm tỉ trọng bao nhiêu % trong tổng giá trị s
